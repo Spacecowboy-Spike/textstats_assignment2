@@ -1,5 +1,6 @@
 import re
 from collections import Counter
+import text_stats
 
 """
 Entry point (orchestration only).
@@ -59,24 +60,8 @@ def main() -> None:
     average_word_length = (total_letter_count / word_count) if word_count != 0 else 0.0
     average_word_length_str = f"{average_word_length:.1f}"
 
-    # --- Most common word(s) and frequency ---
-    if word_count == 0:
-        most_common_line = "Most common word(s): (0)"
-    else:
-        word_counts = Counter(word_list)
-        highest_frequency = 0
-        for word in word_counts:
-            if word_counts[word] > highest_frequency:
-                highest_frequency = word_counts[word]
-        most_frequent_words = []
-        for word in word_counts:
-            if word_counts[word] == highest_frequency:
-                most_frequent_words.append(word)
-        most_frequent_words.sort()
-        if len(most_frequent_words) == 1:
-            most_common_line = f"Most common word(s): {most_frequent_words[0]} ({highest_frequency})"
-        else:
-            most_common_line = f"Most common word(s): {', '.join(most_frequent_words)} ({highest_frequency})"
+    # --- Most common word(s) and frequency -
+    most_common_line, most_frequent_words, highest_frequency = text_stats.word_frequencies(word_count,word_list)
 
     # --- Build the six required lines in the exact order/format ---
     output_lines = [
