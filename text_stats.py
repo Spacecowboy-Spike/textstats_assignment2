@@ -25,3 +25,10 @@ def tokenize_words(text_content):
     lowered_text = text_content.lower()
     word_list = re.findall(r"[a-zA-Z]+", lowered_text)
     return word_list
+
+
+# --- Word statistics ---
+def word_count(word_list):
+    word_count = len(word_list)
+    unique_word_count = len(set(word_list))
+    return word_count, unique_word_count
