@@ -1,4 +1,15 @@
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+*.swp
+.env
+.venv
+env/
+venv/
+.build/
+dist/
+*.egg-info/
+.idea/
 .vscode/
-.DS_Store
