@@ -1,3 +1,4 @@
+import re
 """
 Pure text-processing functions (no I/O or exceptions).
 
@@ -17,3 +18,17 @@ Rules:
 # - Consider a constant regex pattern for words.
 # - Separate calculation from formatting.
 # - Return data structures that are easy to test.
+
+# --- Word extraction: letters only (A–Z/a–z), case-insensitive for counting/uniqueness ---
+def tokenize_words(text_content):
+    
+    lowered_text = text_content.lower()
+    word_list = re.findall(r"[a-zA-Z]+", lowered_text)
+    return word_list
+
+
+# --- Word statistics ---
+def word_count(word_list):
+    word_count = len(word_list)
+    unique_word_count = len(set(word_list))
+    return word_count, unique_word_count
