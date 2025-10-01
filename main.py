@@ -1,5 +1,6 @@
 import re
 from collections import Counter
+from text_stats import tokenize_words
 
 """
 Entry point (orchestration only).
@@ -40,9 +41,9 @@ def main() -> None:
             characters_no_spaces += 1
         char_index += 1
 
+
     # --- Word extraction: letters only (A–Z/a–z), case-insensitive for counting/uniqueness ---
-    lowered_text = text_content.lower()
-    word_list = re.findall(r"[a-zA-Z]+", lowered_text)
+    word_list = tokenize_words(text_content)
 
     # --- Word statistics ---
     word_count = len(word_list)
