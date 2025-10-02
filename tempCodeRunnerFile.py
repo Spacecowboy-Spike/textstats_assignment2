@@ -69,25 +69,16 @@ def main() -> None:
 
 
     # --- Build the six required lines in the exact order/format ---
-    from text_stats import compute_stats, format_stats
+    from text_stats import format_stats
 
-def main():
-    with open("input.txt", "r", encoding="utf-8") as f:
-        text = f.read()
-
-    stats = compute_stats(text)
-    lines = format_stats(stats)
-
-    for line in lines:
-        print(line)
-
-    with open("output.txt", "w", encoding="utf-8") as f:
-        for line in lines:
-            f.write(line + "\n")
-
-if __name__ == "__main__":
-    main()
-
+    stats = {
+    "word_count": word_count,
+    "unique_words": unique_word_count,
+    "characters_with_spaces": characters_with_spaces,
+    "characters_no_spaces": characters_no_spaces,
+    "average_word_length": average_word_length_str,
+    "most_common": [(word, highest_frequency) for word in most_frequent_words]  # from most_common()
+}
 
 
 
