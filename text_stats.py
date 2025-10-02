@@ -32,3 +32,15 @@ def word_count(word_list):
     word_count = len(word_list)
     unique_word_count = len(set(word_list))
     return word_count, unique_word_count
+
+# --- Text stats summary ---
+def stats_summary(word_count, unique_word_count, characters_with_spaces,
+                characters_no_spaces, average_word_length_str,
+                most_common_line):
+    return {
+        "word_count": word_count,
+        "unique_word_count": unique_word_count,
+        "characters_with_spaces": characters_with_spaces,
+        "characters_no_spaces": characters_no_spaces,
+        "average_word_length_str": average_word_length_str,
+        "most_common_line": most_common_line}
