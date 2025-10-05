@@ -22,7 +22,6 @@ Rules:
 
 # --- Word extraction: letters only (A–Z/a–z), case-insensitive for counting/uniqueness ---
 def tokenize_words(text_content):
-    
     lowered_text = text_content.lower()
     word_list = re.findall(r"[a-zA-Z]+", lowered_text)
     return word_list
@@ -42,28 +41,28 @@ def count_chars(text_content):
 
 
 # average word length with one decimal; 0.0 if there are no words
-def average_word_length_str(word_list, word_count):
+def average_word_length_str(word_list, total_words):
     # total letters across all words
     total_letter_count = 0
     word_index = 0
     while word_index < len(word_list):
         total_letter_count += len(word_list[word_index])
         word_index += 1
-    average_word_length = (total_letter_count / word_count) if word_count != 0 else 0.0
-    average_word_length_str = f"{average_word_length:.1f}"
-    return average_word_length_str
+    average_word_length = (total_letter_count / total_words) if total_words != 0 else 0.0
+    average_word_length = f"{average_word_length:.1f}"
+    return average_word_length
 
 
 # --- Word statistics ---
 def word_count(word_list):
-    word_count = len(word_list)
+    total_words = len(word_list)
     unique_word_count = len(set(word_list))
-    return word_count, unique_word_count
+    return total_words, unique_word_count
 
 
 # --- Most common word(s) and frequency ---
-def most_common_word(word_count, word_list):
-    if word_count == 0:
+def most_common_word(total_words, word_list):
+    if total_words == 0:
         most_common_line = "Most common word(s): (0)"
     else:
         word_counts = Counter(word_list)
@@ -84,15 +83,29 @@ def most_common_word(word_count, word_list):
 
 
 # --- Text stats summary ---
-def stats_summary(word_count, unique_word_count, characters_with_spaces,
-                characters_no_spaces, average_word_length_str,
-                most_common_line):
+def stats_summary(text_content):
+    
+    # --- Character counts ---
+    characters_no_spaces, characters_with_spaces = count_chars(text_content)
+
+    # --- Word extraction: letters only (A–Z/a–z), case-insensitive for counting/uniqueness ---
+    word_list = tokenize_words(text_content)
+
+    # --- Word statistics ---
+    total_words, unique_word_count = word_count(word_list)
+
+    # average word length with one decimal; 0.0 if there are no words
+    average_word_length = average_word_length_str(word_list, total_words)
+
+    # --- Most common word(s) and frequency ---
+    most_common_line = most_common_word(total_words, word_list)
+
     return {
-        "word_count": word_count,
+        "word_count": total_words,
         "unique_word_count": unique_word_count,
         "characters_with_spaces": characters_with_spaces,
         "characters_no_spaces": characters_no_spaces,
-        "average_word_length_str": average_word_length_str,
+        "average_word_length_str": average_word_length,
         "most_common_line": most_common_line}
     
     
