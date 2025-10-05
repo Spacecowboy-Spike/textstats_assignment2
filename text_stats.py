@@ -26,6 +26,7 @@ def tokenize_words(text_content):
     word_list = re.findall(r"[a-zA-Z]+", lowered_text)
     return word_list
 
+
 # --- Character counts ---
 def count_chars(text_content):
     characters_with_spaces = len(text_content)
@@ -39,12 +40,25 @@ def count_chars(text_content):
     return characters_no_spaces, characters_with_spaces
 
 
+# average word length with one decimal; 0.0 if there are no words
+def average_word_length_str(word_list, word_count):
+    # total letters across all words
+    total_letter_count = 0
+    word_index = 0
+    while word_index < len(word_list):
+        total_letter_count += len(word_list[word_index])
+        word_index += 1
+    average_word_length = (total_letter_count / word_count) if word_count != 0 else 0.0
+    average_word_length_str = f"{average_word_length:.1f}"
+    return average_word_length_str
+
 
 # --- Word statistics ---
 def word_count(word_list):
     word_count = len(word_list)
     unique_word_count = len(set(word_list))
     return word_count, unique_word_count
+
 
 # --- Text stats summary ---
 def stats_summary(word_count, unique_word_count, characters_with_spaces,

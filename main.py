@@ -34,23 +34,14 @@ def main() -> None:
     # --- Character counts ---
     characters_no_spaces, characters_with_spaces = text_stats.count_chars(text_content)
 
-
     # --- Word extraction: letters only (A–Z/a–z), case-insensitive for counting/uniqueness ---
     word_list = text_stats.tokenize_words(text_content)
 
     # --- Word statistics ---
     word_count, unique_word_count = text_stats.word_count(word_list)
 
-    # total letters across all words
-    total_letter_count = 0
-    word_index = 0
-    while word_index < len(word_list):
-        total_letter_count += len(word_list[word_index])
-        word_index += 1
-
     # average word length with one decimal; 0.0 if there are no words
-    average_word_length = (total_letter_count / word_count) if word_count != 0 else 0.0
-    average_word_length_str = f"{average_word_length:.1f}"
+    average_word_length_str = text_stats.average_word_length_str(word_list, word_count)
 
     # --- Most common word(s) and frequency ---
     if word_count == 0:
