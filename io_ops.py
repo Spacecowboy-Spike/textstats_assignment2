@@ -19,3 +19,9 @@ Note:
 # def read_text_file(path: str) -> str: ...
 # def confirm_overwrite(path: str) -> bool: ...
 # def write_lines(path: str, lines: list[str]) -> bool: ...
+
+
+def read_text(filepath = 'input.txt'):
+    with open(filepath, "r", encoding="utf-8") as file_in:
+        text_content = file_in.read()
+    return text_content

@@ -1,6 +1,7 @@
 import re
 from collections import Counter
 import text_stats
+import io_ops
 
 """
 Entry point (orchestration only).
@@ -28,8 +29,7 @@ def main() -> None:
 
 
     # --- Read the raw file text (assumes input.txt exists in the same folder) ---
-    with open("input.txt", "r", encoding="utf-8") as file_in:
-        text_content = file_in.read()
+    text_content = io_ops.read_text()
 
     # --- Character counts ---
     characters_with_spaces = len(text_content)
@@ -78,14 +78,19 @@ def main() -> None:
         else:
             most_common_line = f"Most common word(s): {', '.join(most_frequent_words)} ({highest_frequency})"
 
+    # --- Text stats summary ---
+    stats_summary = text_stats.stats_summary(word_count, unique_word_count, characters_with_spaces,
+                characters_no_spaces, average_word_length_str,
+                most_common_line)
+    
     # --- Build the six required lines in the exact order/format ---
     output_lines = [
-        f"Word count: {word_count}",
-        f"Unique words: {unique_word_count}",
-        f"Characters (with spaces): {characters_with_spaces}",
-        f"Characters (no spaces): {characters_no_spaces}",
-        f"Average word length: {average_word_length_str}",
-        most_common_line,
+        f"Word count: {stats_summary['word_count']}",
+        f"Unique words: {stats_summary['unique_word_count']}",
+        f"Characters (with spaces): {stats_summary['characters_with_spaces']}",
+        f"Characters (no spaces): {stats_summary['characters_no_spaces']}",
+        f"Average word length: {stats_summary['average_word_length_str']}",
+        stats_summary['most_common_line'],
     ]
 
 
