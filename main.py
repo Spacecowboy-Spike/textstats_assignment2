@@ -19,16 +19,18 @@ TODO (team):
 def main() -> None:
     # TODO: glue together a simple flow:
     # 1) get input path (prompt)
+    filename_input = io_ops.prompt_nonempty()
     # 2) read text (io_ops)
+    text_content = io_ops.read_text(filename_input)
     # 3) compute metrics (text_stats)
     # 4) print to console
     # 5) write to output file (io_ops)
+    filename_output = io_ops.write_filename()
+    io_ops.write_lines(output_lines, filename_output)
     pass
 
 
 
-    # --- Read the raw file text (assumes input.txt exists in the same folder) ---
-    text_content = io_ops.read_text()
 
     # --- Character counts ---
     characters_no_spaces, characters_with_spaces = text_stats.count_chars(text_content)
@@ -58,9 +60,7 @@ def main() -> None:
     while line_index < len(output_lines):
         print(output_lines[line_index])
         line_index += 1
-
-    # --- Write to output.txt ---
-    io_ops.output_report(output_lines)
+        
 
 
 if __name__ == "__main__":
