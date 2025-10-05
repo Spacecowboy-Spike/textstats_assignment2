@@ -20,8 +20,16 @@ Note:
 # def confirm_overwrite(path: str) -> bool: ...
 # def write_lines(path: str, lines: list[str]) -> bool: ...
 
-
-def read_text(filepath = 'input.txt'):
+#--- Read the raw file text (assumes input.txt exists in the same folder) ---
+def read_text(filepath='input.txt'):
     with open(filepath, "r", encoding="utf-8") as file_in:
         text_content = file_in.read()
     return text_content
+
+# --- Write to output.txt ---
+def output_report(output_lines, filepath='output.txt'):
+    with open(filepath, "w", encoding="utf-8") as file_out:
+        line_index = 0
+        while line_index < len(output_lines):
+            file_out.write(output_lines[line_index] + ("\n" if line_index < len(output_lines) - 1 else ""))
+            line_index += 1
