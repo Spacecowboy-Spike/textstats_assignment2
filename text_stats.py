@@ -1,4 +1,5 @@
 import re
+from collections import Counter
 """
 Pure text-processing functions (no I/O or exceptions).
 
@@ -60,6 +61,28 @@ def word_count(word_list):
     return word_count, unique_word_count
 
 
+# --- Most common word(s) and frequency ---
+def most_common_word(word_count, word_list):
+    if word_count == 0:
+        most_common_line = "Most common word(s): (0)"
+    else:
+        word_counts = Counter(word_list)
+        highest_frequency = 0
+        for word in word_counts:
+            if word_counts[word] > highest_frequency:
+                highest_frequency = word_counts[word]
+        most_frequent_words = []
+        for word in word_counts:
+            if word_counts[word] == highest_frequency:
+                most_frequent_words.append(word)
+        most_frequent_words.sort()
+        if len(most_frequent_words) == 1:
+            most_common_line = f"Most common word(s): {most_frequent_words[0]} ({highest_frequency})"
+        else:
+            most_common_line = f"Most common word(s): {', '.join(most_frequent_words)} ({highest_frequency})"
+        return most_common_line
+
+
 # --- Text stats summary ---
 def stats_summary(word_count, unique_word_count, characters_with_spaces,
                 characters_no_spaces, average_word_length_str,
@@ -71,3 +94,16 @@ def stats_summary(word_count, unique_word_count, characters_with_spaces,
         "characters_no_spaces": characters_no_spaces,
         "average_word_length_str": average_word_length_str,
         "most_common_line": most_common_line}
+    
+    
+# --- Build the six required lines in the exact order/format ---
+def format_report(stats_summary):
+    output_lines = [
+        f"Word count: {stats_summary['word_count']}",
+        f"Unique words: {stats_summary['unique_word_count']}",
+        f"Characters (with spaces): {stats_summary['characters_with_spaces']}",
+        f"Characters (no spaces): {stats_summary['characters_no_spaces']}",
+        f"Average word length: {stats_summary['average_word_length_str']}",
+        stats_summary['most_common_line'],
+    ]
+    return output_lines
