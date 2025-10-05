@@ -32,14 +32,7 @@ def main() -> None:
     text_content = io_ops.read_text()
 
     # --- Character counts ---
-    characters_with_spaces = len(text_content)
-    characters_no_spaces = 0
-    char_index = 0
-    while char_index < len(text_content):
-        current_char = text_content[char_index]
-        if not current_char.isspace():
-            characters_no_spaces += 1
-        char_index += 1
+    characters_no_spaces, characters_with_spaces = text_stats.count_chars(text_content)
 
 
     # --- Word extraction: letters only (A–Z/a–z), case-insensitive for counting/uniqueness ---
