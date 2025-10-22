@@ -1,54 +1,38 @@
+import text_stats
+import io_ops
+
+
 """
-Text Statistics Analyzer - OOP Version
-Main entry point for the text analysis program.
+Entry point (orchestration only).
 
-This module orchestrates the text analysis workflow using object-oriented design.
-Students should implement the TextAnalyzer, TextProcessor, and FileHandler 
-classes to match the interface demonstrated here.
+TODO (team):
+- Prompt for input file path (interactive) — keep logic minimal.
+- Call functions from text_stats.py to compute results.
+- Print six output lines in exact format.
+- Prompt for output file, confirm overwrite, write lines via io_ops.py.
+- Ensure this file stays "thin" — no heavy logic here.
 """
 
-from text_processor import TextProcessor
-from text_analyzer import TextAnalyzer
-from file_handler import FileHandler
+# from io_ops import ...   # TODO: import the small set of I/O helpers you create
+# from text_stats import ...  # TODO: import your pure functions
 
-
-def main():
-    """
-    Main function that orchestrates the text analysis workflow.
-    
-    Workflow:
-    1. Prompt user for input filename
-    2. Read the text file
-    3. Create a TextProcessor and clean/tokenize the text
-    4. Create a TextAnalyzer with the processed tokens
-    5. Generate statistics
-    6. Display results to console
-    7. Prompt user for output filename
-    8. Write results to file
-    """
-    print("=== Text Statistics Analyzer (OOP Version) ===\n")
-    
-    # Step 1 & 2: Get input file and read content
-    file_handler = FileHandler()
-    raw_text = file_handler.read_input_file()
-    
-    # Step 3: Process and tokenize the text
-    processor = TextProcessor(raw_text)
-    words = processor.get_words()
-    
-    # Step 4 & 5: Create analyzer and generate statistics
-    analyzer = TextAnalyzer(raw_text, words)
-    analyzer.analyze()
-    
-    # Step 6: Display results to console
-    print("\n--- Analysis Results ---")
-    print(analyzer.get_formatted_output())
-    
-    # Step 7 & 8: Write results to output file
-    file_handler.write_output_file(analyzer.get_formatted_output())
-    
-    print("\nAnalysis complete!")
-
+def main() -> None:
+    # TODO: glue together a simple flow:
+    # 1) get input path (prompt)
+    filename_input = io_ops.prompt_nonempty()
+    # 2) read text (io_ops)
+    text_content = io_ops.read_text(filename_input)
+    # 3) compute metrics (text_stats)
+    stats_summary = text_stats.stats_summary(text_content)
+    # 4) print to console
+    output_lines = text_stats.format_report(stats_summary)
+    line_index = 0
+    while line_index < len(output_lines):
+        print(output_lines[line_index])
+        line_index += 1
+    # 5) write to output file (io_ops)
+    filename_output = io_ops.write_filename()
+    io_ops.write_lines(output_lines, filename_output)
 
 if __name__ == "__main__":
     main()
