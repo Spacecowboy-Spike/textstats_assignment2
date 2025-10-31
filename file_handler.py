@@ -25,25 +25,30 @@ class FileHandler:
                 return text
         except KeyboardInterrupt:
             print("\nOperation cancelled by user.")
-            return None
+            return ''
     
     def get_output_filename(self):
         """Prompt user for output filename with validation."""
-        while True:
-            filename = input('Please name the filename you want to write: ').strip()
-            if len(filename) == 0:
-                print('Filename must not be empty')
-                continue
-            if not filename.lower().endswith(".txt"):
-                filename += '.txt'
-            file_path = Path(filename)
-            if file_path.exists():
-                rewrite = input(f"File '{filename}' is already exists in current directory, do you want to overwrite it(yes/no)? ")
-                if rewrite.strip().lower() == 'yes':
-                    return filename
-                else:
+        try:
+            while True:
+                filename = input('Please name the filename you want to write: ').strip()
+                if len(filename) == 0:
+                    print('Filename must not be empty')
                     continue
-            return filename
+                if not filename.lower().endswith(".txt"):
+                    filename += '.txt'
+                file_path = Path(filename)
+                if file_path.exists():
+                    rewrite = input(f"File '{filename}' is already exists in current directory, do you want to overwrite it(yes/no)? ")
+                    if rewrite.strip().lower() == 'yes':
+                        return filename
+                    else:
+                        continue
+                return filename
+            
+        except KeyboardInterrupt:
+            print("\nOperation cancelled by user.")
+            return ''
     
     def read_file(self, filename):
         """Read and return contents of a file."""
@@ -59,10 +64,13 @@ class FileHandler:
         except PermissionError:
             print(f"\nError: Permission denied while trying to read '{filename}'.")
             raise
-    
+        
+        
     def write_output_file(self, content):
         """Write content to a file."""
         filename = self.get_output_filename()
+        if filename == '':
+            return None
         try:
             with open(filename, "w", encoding="utf-8") as file_out:
                 file_out.write(content)      
