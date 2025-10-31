@@ -1,5 +1,4 @@
 from collections import Counter
-import string
 
 """
 Statistical analysis of text data.
@@ -20,7 +19,7 @@ class TextAnalyzer:
         self.char_count_no_spaces = 0
         self.avg_word_length_str = "0.0"     # keep 1-decimal string
         self._most_common = ("", 0)          # (word, count)
-        self._letter_freqs = {ch: 0 for ch in string.ascii_lowercase}
+        self._letter_freqs = {}
         self._analyzed = False
 
 
@@ -56,22 +55,25 @@ class TextAnalyzer:
         self.avg_word_length_str = f"{total_letters / self.word_count:.1f}"
 
     def _compute_most_common(self):
-        """Fill _most_common as (word, count) with deterministic tie-break."""
+        """Compute all tie-maximum words; join by ', ' and keep the shared max count."""
         if self.word_count == 0:
             self._most_common = ("", 0)
             return
         c = Counter(self.words)
         max_cnt = max(c.values())
-        # tie-break by lexicographic order for determinism
-        best = min([w for w, n in c.items() if n == max_cnt])
-        self._most_common = (best, max_cnt)
+
+        # Get all words have highest frequency
+        tied_words = [w for w, n in c.items() if n == max_cnt]
+        # Sort words alphabetically
+        tied_words_sorted = sorted(set(tied_words), key=str.lower)
+
+        # Join with comma and space
+        combined = ", ".join(f"'{w}'" for w in tied_words_sorted)
+        self._most_common = (combined, max_cnt)
 
     def _compute_letter_freqs(self):
         """Fill _letter_freqs counting only a-z (case-insensitive)."""
-        self._letter_freqs = {ch: 0 for ch in string.ascii_lowercase}
-        for ch in self.raw_text.lower():
-            if ch in self._letter_freqs:
-                self._letter_freqs[ch] += 1
+        self._word_freqs = Counter(self.words)
 
 
     # =========================
@@ -89,14 +91,21 @@ class TextAnalyzer:
     def get_most_common_word(self):
         """Return (word, count); if no words -> ("", 0)."""
         self._ensure_analyzed()
-        return self._most_common
+        w, c = self._most_common
+        # If w contains multiple comma-separated words (e.g., "'a', 'b', 'c'")
+        # we manually format it into a cleaner printable string.
+        if ", " in w:
+        # Return a formatted string that looks like a tuple, 
+        # but without Python automatically adding extra outer quotes.
+            return f"({w}, {c})"
+        else:
+        # For a single word, keep a consistent tuple-like format.
+            return f"('{w}', {c})"
 
     def get_letter_frequencies(self, include_zeros=True):
-        """Return dict of letter->count (a-z, case-insensitive)."""
+        """Return dict of letter->count word."""
         self._ensure_analyzed()
-        if include_zeros:
-            return dict(self._letter_freqs)
-        return {k: v for k, v in self._letter_freqs.items() if v > 0}
+        return dict(self._word_freqs)
 
     # =========================
     # Official output
@@ -112,7 +121,7 @@ class TextAnalyzer:
             f"Average word length: {self.avg_word_length_str}",
         ]
         w, c = self._most_common
-        lines.append(f"Most common word: '{w}' ({c})" if c > 0 else "Most common word: N/A")
+        lines.append(f"Most common word: {w} ({c})" if c > 0 else "Most common word: N/A")
         return "\n".join(lines)
 
 
