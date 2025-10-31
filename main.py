@@ -1,10 +1,18 @@
 """
 Text Statistics Analyzer - OOP Version
+
 Main entry point for the text analysis program.
 
-This module orchestrates the text analysis workflow using object-oriented design.
-Students should implement the TextAnalyzer, TextProcessor, and FileHandler 
-classes to match the interface demonstrated here.
+This script orchestrates the workflow using three classes students implement:
+- FileHandler      : user prompts, file reads/writes
+- TextProcessor    : text cleaning and tokenization
+- TextAnalyzer     : statistics and formatted report
+
+IMPORTANT:
+- The console prints below are **design probes** that call small, focused
+  methods on TextAnalyzer. They are for visibility only and must NOT change
+  the program’s final output. The official output is still whatever
+  get_formatted_output() returns and what we write to the output file.
 """
 
 from text_processor import TextProcessor
@@ -13,40 +21,53 @@ from file_handler import FileHandler
 
 
 def main():
-    """
-    Main function that orchestrates the text analysis workflow.
-    
-    Workflow:
-    1. Prompt user for input filename
-    2. Read the text file
-    3. Create a TextProcessor and clean/tokenize the text
-    4. Create a TextAnalyzer with the processed tokens
-    5. Generate statistics
-    6. Display results to console
-    7. Prompt user for output filename
-    8. Write results to file
-    """
-    print("=== Text Statistics Analyzer (OOP Version) ===\n")
-    
-    # Step 1 & 2: Get input file and read content
+    print("=== Text Statistics Analyzer (OOP) ===\n")
+
+    # 1) Read input
+    print("[main] Initializing FileHandler and reading input file...")
     file_handler = FileHandler()
     raw_text = file_handler.read_input_file()
-    
-    # Step 3: Process and tokenize the text
+    print(f"[main] Loaded {len(raw_text)} characters.\n")
+
+    # 2) Process text
+    print("[main] Initializing TextProcessor and extracting words...")
     processor = TextProcessor(raw_text)
     words = processor.get_words()
-    
-    # Step 4 & 5: Create analyzer and generate statistics
+    print(f"[main] Extracted {len(words)} words.\n")
+
+    # 3) Analyze
+    print("[main] Initializing TextAnalyzer and running analyze()...")
     analyzer = TextAnalyzer(raw_text, words)
     analyzer.analyze()
-    
-    # Step 6: Display results to console
-    print("\n--- Analysis Results ---")
-    print(analyzer.get_formatted_output())
-    
-    # Step 7 & 8: Write results to output file
-    file_handler.write_output_file(analyzer.get_formatted_output())
-    
+    print("[main] analyze() complete.\n")
+
+    # 4) Design probes (expected to exist; do not modify final output)
+    print("--- Design Probes (for learning visibility only) ---")
+    word_count = analyzer.get_word_count()
+    print(f"[probe] get_word_count() -> {word_count}")
+
+    unique_word_count = analyzer.get_unique_word_count()
+    print(f"[probe] get_unique_word_count() -> {unique_word_count}")
+
+    most_common_word = analyzer.get_most_common_word()
+    print(f"[probe] get_most_common_word() -> {most_common_word}")
+
+    letter_freqs_preview = analyzer.get_letter_frequencies(include_zeros=True)
+    # Show a deterministic, tiny preview to avoid cluttering the console
+    preview_keys = sorted(letter_freqs_preview.keys())[:5]
+    preview = {k: letter_freqs_preview[k] for k in preview_keys}
+    print(f"[probe] get_letter_frequencies(include_zeros=True) -> preview {preview}")
+    print("--- End Design Probes ---\n")
+
+    # 5) Official output (the program's actual result)
+    print("--- Analysis Results ---")
+    final_output = analyzer.get_formatted_output()
+    print(final_output)
+
+    # 6) Write results
+    print("\n[main] Writing results to output file...")
+    file_handler.write_output_file(final_output)
+
     print("\nAnalysis complete!")
 
 
