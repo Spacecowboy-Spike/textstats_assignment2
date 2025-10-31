@@ -7,7 +7,7 @@ Handles user prompts, file reading, and file writing with error handling.
 class FileHandler:
     """Manages all file input/output operations."""
     
-    def prompt_for_input_file(self):
+    def read_input_file(self):
         """Prompt user for input filename with validation."""
         try:
             while True:
@@ -26,7 +26,7 @@ class FileHandler:
             print("\nOperation cancelled by user.")
             return None
     
-    def prompt_for_output_file(self):
+    def write_output_file(self):
         """Prompt user for output filename with validation."""
         while True:
             filename = input('Please name the filename you want to write: ').strip()
