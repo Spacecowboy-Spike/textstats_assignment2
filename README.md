@@ -1,33 +1,68 @@
-# Text Stats — Refactor Starter (No Solution Code)
+## OOP Refactor (Completed)
 
-This starter repo contains empty module files with TODO comments. Your job:
-- Extract pure text-processing logic into `text_stats.py` (no input/print/file I/O, no try/except).
-- Implement user interaction + guards + exception handling in `io_ops.py`.
-- Keep `main.py` minimal: prompt → call functions → print/write.
+This project is being refactored from a functional design to object-oriented design.
+
+### Branch Structure
+- `main`: Working functional version
+- `oop-refactor`: OOP version in development, I left it in case The instructor will review my assignment 2
+- `assignment3`: Based on `oop-refactor`, continue to finish assignment 3
+
+### New Class Structure
+- `FileHandler`: Manages all file I/O operations
+- `TextProcessor`: Handles text cleaning and tokenization  
+- `TextAnalyzer`: Performs statistical analysis
+
+### Status
+- [x] Repository forked and cloned
+- [x] OOP branch created
+- [x] New main.py added
+- [x] Class skeletons created
+- [x] Classes implemented (Assignment 3)
+- [x] Update README and documentation  
+
+
+## Class Design
+
+### FileHandler
+Handles all file input/output operations.  
+- Prompts the user for input/output filenames.  
+- Validates file existence and manages overwriting prompts.  
+- Reads text data from input files and writes results to output files.  
+
+### TextProcessor
+Processes raw text and extracts words.  
+- Removes punctuation and converts text to lowercase.  
+- Splits text into individual words.  
+- Returns a clean list of words for analysis.  
+
+### TextAnalyzer
+Performs all statistical computations on the processed text.  
+- Calculates word count, unique word count, and character counts.  
+- Determines average word length.  
+- Finds the most common word(s), handling ties alphabetically.  
+- Computes word frequency distribution (called “letter frequency” for compatibility).  
+- Generates a formatted report for output.
+
 
 ## How to Run
-```bash
-python main.py
-```
-(Your team decides on interactive prompts and defaults; document them here once implemented.)
 
-## Output Requirements (exact format)
-1. Word count
-2. Unique words
-3. Characters (with spaces)
-4. Characters (no spaces)
-5. Average word length (one decimal)
-6. Most common word(s): alphabetical order for ties; `(0)` if no words
+1. Open a terminal in the project directory.  
+2. Run the main program:
+   ```bash
+   python main.py
+3. When prompted, type the name of the input file (without .txt extension).
+4. After processing, provide an output filename when prompted.
+5. The analysis results will be saved in the specified .txt file.
 
-## Team Workflow
-- Use a **feature branch** for each task (e.g., `refactor/modules`, `io/guards`).
-- Open **Pull Requests** for review before merging to `main`.
-- Track tasks with **Issues** and/or a **Project Board**.
 
-## Definition of Done
-- `main.py` orchestrates only.
-- `text_stats.py` has no I/O or exceptions.
-- `io_ops.py` validates user input and handles file exceptions.
-- Program never crashes on bad input; re-prompts or exits gracefully.
-- Output matches the spec exactly.
-- README updated with run instructions and any assumptions.
+## Design Decisions
+
+- **Separation of concerns:** Each class handles one clear responsibility (I/O, processing, analysis).  
+- **Modular Analysis Methods:**  
+  In the `TextAnalyzer` class, instead of writing all logic inside a single `analyze()` method, I intentionally separated each computation into focused private helper methods (e.g., `_count_chars()`, `_compute_word_stats()`, `_compute_avg_word_length()`, etc.).  
+  This modular structure improves readability, debugging, and reusability. 
+  Each helper method performs one well-defined task, while `analyze()` simply coordinates their execution in order.  
+  As a result, it’s easier to modify or test individual calculations without breaking the rest of the class.
+- **Error handling:** All user inputs (including Ctrl+C) are caught gracefully to prevent crashes.  
+- **Compatibility:** Method names strictly follow the interface expected by main.py.  
+- **Determinism:** The most common word computation breaks ties alphabetically to ensure consistent output.
