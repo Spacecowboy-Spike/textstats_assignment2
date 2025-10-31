@@ -2,10 +2,13 @@
 
 This project is being refactored from a functional design to object-oriented design.
 
+### Repository Link
+https://github.com/Spacecowboy-Spike/textstats_assignment2
+
 ### Branch Structure
 - `main`: Working functional version
-- `oop-refactor`: OOP version in development, I left it in case The instructor will review my assignment 2
-- `assignment3`: Based on `oop-refactor`, continue to finish assignment 3
+- `oop-refactor(In-progress,-assignment2-completed-stage)`: OOP version in development, I left it in case The instructor will review my assignment 2
+- `oop-refactor(completed)`: Based on assignment2, continue to finish assignment 3
 
 ### New Class Structure
 - `FileHandler`: Manages all file I/O operations
