@@ -39,7 +39,10 @@ class FileHandler:
                     filename += '.txt'
                 file_path = Path(filename)
                 if file_path.exists():
-                    rewrite = input(f"File '{filename}' is already exists in current directory, do you want to overwrite it(yes/no)? ")
+                    rewrite = input(
+                        f"File '{filename}' already exists in current" 
+                        "directory, do you want to overwrite it(yes/no)? "
+                        )
                     if rewrite.strip().lower() == 'yes':
                         return filename
                     else:

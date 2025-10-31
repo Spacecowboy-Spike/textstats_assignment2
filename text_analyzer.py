@@ -121,7 +121,9 @@ class TextAnalyzer:
             f"Average word length: {self.avg_word_length_str}",
         ]
         w, c = self._most_common
-        lines.append(f"Most common word: {w} ({c})" if c > 0 else "Most common word: N/A")
+        lines.append(
+            f"Most common word: {w} ({c})" if c > 0 else "Most common word: N/A"
+            )
         return "\n".join(lines)
 
 
