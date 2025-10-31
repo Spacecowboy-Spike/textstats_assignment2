@@ -1,3 +1,4 @@
+import re
 """
 Text processing and tokenization for text statistics.
 Handles cleaning and splitting text into words.
@@ -8,8 +9,10 @@ class TextProcessor:
     
     def __init__(self, raw_text):
         """Initialize with raw text content."""
-        pass
+        self.raw_text = raw_text
     
     def get_words(self):
         """Return list of cleaned, lowercase words from text."""
-        pass
+        lowered_text = self.raw_text.lower()
+        word_list = re.findall(r"[a-zA-Z]+", lowered_text)
+        return word_list
