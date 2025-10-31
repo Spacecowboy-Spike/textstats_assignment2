@@ -21,12 +21,13 @@ class FileHandler:
                 if not file_path.exists():
                     print(f"File '{filename}' not found in current directory.")
                     continue
-                return filename
+                text = self.read_file(filename)
+                return text
         except KeyboardInterrupt:
             print("\nOperation cancelled by user.")
             return None
     
-    def write_output_file(self):
+    def get_output_filename(self):
         """Prompt user for output filename with validation."""
         while True:
             filename = input('Please name the filename you want to write: ').strip()
@@ -59,15 +60,12 @@ class FileHandler:
             print(f"\nError: Permission denied while trying to read '{filename}'.")
             raise
     
-    def write_file(self, filename, content):
+    def write_output_file(self, content):
         """Write content to a file."""
+        filename = self.get_output_filename()
         try:
             with open(filename, "w", encoding="utf-8") as file_out:
-                line_index = 0
-            while line_index < len(content):
-                file_out.write(content[line_index] + ("\n" if line_index < len(content) - 1 else ""))
-                line_index += 1
-                
+                file_out.write(content)      
             print(f"File '{filename}' written successfully.")
         except PermissionError:
             print(f"\nError: Permission denied while trying to write '{filename}'.")
